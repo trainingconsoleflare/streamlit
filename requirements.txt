@@ -4,3 +4,4 @@ wordcloud
 textblob
 nltk
 plotly
+WordCloud
