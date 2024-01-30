@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from collections import Counter
 
 # Download NLTK resources
-nltk.download('stopwords')
+nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 
 # Function to generate word cloud from adjectives
