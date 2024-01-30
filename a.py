@@ -26,6 +26,14 @@ def generate_adjective_wordcloud(text):
     else:
         st.warning("No adjectives found.")
 
+# Function to generate word cloud for all words
+def generate_wordcloud(text):
+    wordcloud = WordCloud(width=800, height=400, background_color="white").generate(text)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation="bilinear")
+    ax.axis("off")
+    st.pyplot(fig)
+
 # Function to remove custom words from text
 def remove_custom_words(text, custom_words):
     for word in custom_words:
@@ -39,8 +47,8 @@ def remove_numbers_and_symbols(text):
 
 # Function to analyze word frequency
 def analyze_word_frequency(text, top_n=10):
-    adjectives = [word.lower() for (word, pos) in TextBlob(text).tags if pos.startswith('JJ')]
-    word_freq = Counter(adjectives)
+    words = [word.lower() for (word, pos) in TextBlob(text).tags]
+    word_freq = Counter(words)
     return dict(word_freq.most_common(top_n))
 
 # Function to perform sentiment analysis
@@ -50,7 +58,7 @@ def analyze_sentiment(text):
     return sentiment_score
 
 # Streamlit app
-st.title("Adjective Analytics from Product and Service Reviews")
+st.title("Word and Adjective Analytics from Product and Service Reviews")
 
 # Text input area or file upload
 text_input_method = st.radio("Choose input method:", ("Direct Text Input", "Upload Text File"))
@@ -77,7 +85,7 @@ custom_words_to_remove = st.text_area(
 custom_words = [word.strip() for word in custom_words_to_remove.split(',')]
 
 # Extract adjectives and generate analytics when the user clicks the button
-if st.button("Generate Adjective Analytics", help="Click to extract adjectives and generate analytics."):
+if st.button("Generate Analytics", help="Click to extract adjectives and generate analytics."):
     with st.spinner("Generating..."):
         if user_input:
             if remove_stopwords:
@@ -89,12 +97,19 @@ if st.button("Generate Adjective Analytics", help="Click to extract adjectives a
 
             user_input = remove_numbers_and_symbols(user_input)
 
+            # Generate word cloud for all words
+            
+
+            # Generate word cloud for adjectives
+            st.title('Word Analytics')
             generate_adjective_wordcloud(user_input)
+            st.title('Adjective Analytics')
+            generate_wordcloud(user_input)
 
             # Analyze and display word frequency
-            st.subheader("Adjective Frequency Analysis")
-            adjective_freq = analyze_word_frequency(user_input, top_n=10)
-            st.table(adjective_freq)
+            st.subheader("Word Frequency Analysis")
+            word_freq = analyze_word_frequency(user_input, top_n=10)
+            st.table(word_freq)
 
             # Perform sentiment analysis and display the result
             st.subheader("Sentiment Analysis")
