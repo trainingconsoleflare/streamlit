@@ -1,6 +1,6 @@
 streamlit
 matplotlib
 wordcloud==1.8.1
-textblob
+textblob==0.16.0
 nltk
 plotly
